@@ -109,11 +109,10 @@ drawBall();
 
 // move ball
 function moveBall() {
-    ballCurrentPosition[0] += xDirection
-    ballCurrentPosition[1] += yDirection
+    ballPosition[0] += xDirection
+    ballPosition[1] += yDirection
     drawBall()
-    checkForCollisions()
-}
+    checkForCollissions}
 
 TimerId = setInterval(moveBall,30)
 
@@ -130,4 +129,6 @@ function changeDirection(){
             xDirection = -2
             return
     }
-}
+} 
+
+
