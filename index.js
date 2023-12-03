@@ -7,6 +7,7 @@ const boardHeight = 300
 const ballDiameter = 20
 let xDirection = -2
 let yDirection = 2
+let intervalDelay = 30
 
 
 const userStart = [230,10]
@@ -115,7 +116,7 @@ function moveBall() {
     drawBall()
     checkForCollisions()}
 
-TimerId = setInterval(moveBall,30)
+TimerId = setInterval(moveBall,intervalDelay)
 
 //check for collisions
 function checkForCollisions() {
@@ -130,12 +131,13 @@ function checkForCollisions() {
         const allBlocks = Array.from(document.querySelectorAll('.block'))
         allBlocks[i].classList.remove('block')
         blocks.splice(i,1)
+        speedIncrease()
         changeDirection()   
         score++
         scoreDisplay.innerHTML = score
         if (blocks.length == 0) {
           scoreDisplay.innerHTML = 'You Win!'
-          clearInterval(timerId)
+          clearInterval(TimerIdimerId)
           document.removeEventListener('keydown', moveUser)
         }
       }
@@ -147,14 +149,16 @@ function checkForCollisions() {
     }
   
     //check for user collision
-    if
-    (
-      (ballPosition[0] > currentPosition[0] && ballPosition[0] < currentPosition[0] + blockWidth) &&
-      (ballPosition[1] > currentPosition[1] && ballPosition[1] < currentPosition[1] + blockHeight ) 
-    )
-    {
-      changeDirection()
+    
+if (
+    (ballPosition[0] + ballDiameter > currentPosition[0] && ballPosition[0] < currentPosition[0] + blockWidth) &&
+    (ballPosition[1] > currentPosition[1] && ballPosition[1] < currentPosition[1] + blockHeight) 
+) {
+    if (ballPosition[1] <= currentPosition[1] + blockHeight) {
+        yDirection *= -1; // Reverse the yDirection if it hits the top of the paddle
     }
+}
+
   
     //game over
     if (ballPosition[1] <= 0) {
@@ -174,3 +178,19 @@ function changeDirection() {
 }
 
 
+function speedIncrease(){
+    // Decrease the delay to increase speed
+    intervalDelay -= 1
+
+    // Ensure delay doesn't get too low
+    if (intervalDelay<5){
+        intervalDelay = 5
+    }
+    // Clear the existing interval and start a new one with the updated delay
+
+    clearInterval(TimerId)
+    TimerId= setInterval(moveBall,intervalDelay)
+}
+
+const increaseButton = document.querySelector('button')
+increaseButton.addEventListener('click',speedIncrease)
